@@ -20,7 +20,7 @@ export const MS_PER_FRAME = 1000 / FPS;
 
 // Movement
 export const GRAVITY = 1;
-export const FLOOR = CANVAS.height;  // Careful - if the height ever changes...
+export const FLOOR = CANVAS.height - 25;  // Careful - if the height ever changes...
 
 // Some convenient keyboard codes
 export const KEYS = {
@@ -42,5 +42,18 @@ export const KEYS = {
  */
 export function $(id) { return document.getElementById(id); }
 
+/**
+ * A random number generator
+ * 
+ * @param {Number} min The minimum random value
+ * @param {Number} max The maximum random value
+ * @returns Random number
+ */
+export function randInt(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
 // Export all the constants by default
-export default { CANVAS, CTX, FPS, MS_PER_FRAME, GRAVITY, FLOOR, KEYS, $ }
+export default { CANVAS, CTX, FPS, MS_PER_FRAME, GRAVITY, FLOOR, KEYS, $, randInt }

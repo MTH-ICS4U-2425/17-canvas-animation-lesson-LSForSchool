@@ -10,12 +10,15 @@
 'use strict';
 
 import Player from "./player.js";
+import Ground from "./ground.js";
 import { CANVAS, CTX, MS_PER_FRAME, KEYS } from "./globals.js";
 
 // Globals
 const HERO = new Player(100, 255, 48, 48);
+const GROUND = new Ground();
 
 let frame_time = performance.now()
+
 
 // Event Listeners
 document.addEventListener("keydown", keypress);
@@ -55,7 +58,16 @@ function update() {
   
   // Clear the canvas
   CTX.clearRect(0, 0, CANVAS.width, CANVAS.height);
+
+  // Draw the ground
+  if (GROUND.aSide) {
+    CTX.drawImage(GROUND.image, 0, 102, 2300, 26, GROUND.xPos, 300, 2300, 28);
+  } else {
+    CTX.drawImage(GROUND.image, 0, 102, 2300, 26, GROUND.xPos, 300, 2300, 28);
+  }
   
+  GROUND.xPos -= 5;
+
   // Draw our hero
   HERO.update();
   

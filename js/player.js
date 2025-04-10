@@ -11,6 +11,8 @@
 import { CTX, CANVAS, GRAVITY, FLOOR } from "./globals.js"
 
 export default class Player {
+  grounded = true;
+  
   constructor(x, y, width, height) {
     this.width = width;
     this.height = height;
@@ -34,11 +36,14 @@ export default class Player {
    * Main function to update location, velocity, and image
    */
   update() {
-    this.velocity.y += GRAVITY;
+    if (this.bottom < FLOOR) {
+      this.velocity.y += GRAVITY;
+    }
     
     if (this.bottom > FLOOR) {
       this.velocity.y = 0;
       this.position.y = FLOOR - this.height;
+      this.grounded = true;
     }
     
     this.position.x += this.velocity.x;
@@ -55,7 +60,10 @@ export default class Player {
   }
 
   jump() {
-    this.position.y -= 1;
-    this.velocity.y = -19;
+    if (this.grounded) {
+      this.grounded = false;
+      this.position.y -= 5;
+      this.velocity.y = -20;
+    }
   }
 }
