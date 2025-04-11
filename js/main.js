@@ -11,7 +11,7 @@
 
 import Player from "./player.js";
 import Ground from "./ground.js";
-import { CANVAS, CTX, MS_PER_FRAME, KEYS } from "./globals.js";
+import { CANVAS, CTX, MS_PER_FRAME, KEYS, IMAGE } from "./globals.js";
 
 // Globals
 const HERO = new Player(100, 255, 48, 48);
@@ -33,7 +33,7 @@ document.addEventListener("contextmenu", (event) => {
  * The user pressed a key on the keyboard 
  */
 function keypress(event) {
-  if (event.keyCode == KEYS.SPACE) {
+  if ([KEYS.W, KEYS.UP_ARROW, KEYS.SPACE].includes(event.keyCode)) {
     HERO.jump();
   }
 }
@@ -61,12 +61,19 @@ function update() {
 
   // Draw the ground
   if (GROUND.aSide) {
-    CTX.drawImage(GROUND.image, 0, 102, 2300, 26, GROUND.xPos, 300, 2300, 28);
+    CTX.drawImage(IMAGE, 0, 102, 2300, 26, GROUND.feedTape[0] + GROUND.xPos, 300, 2300, 28);
+    CTX.drawImage(IMAGE, 1100, 102, 2300, 26, GROUND.feedTape[1] + GROUND.xPos + 1100, 300, 2300, 28);
   } else {
-    CTX.drawImage(GROUND.image, 0, 102, 2300, 26, GROUND.xPos, 300, 2300, 28);
+    CTX.drawImage(IMAGE, 1100, 102, 2300, 26, GROUND.feedTape[0] + GROUND.xPos + 1100, 300, 2300, 28);
+    CTX.drawImage(IMAGE, 0, 102, 2300, 26, GROUND.feedTape[1] + GROUND.xPos, 300, 2300, 28);
   }
-  
+
   GROUND.xPos -= 5;
+
+  if (GROUND.xPos == -2200) {
+    GROUND.addToFeed();
+    GROUND.xPos = 0;
+  }
 
   // Draw our hero
   HERO.update();

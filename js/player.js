@@ -8,7 +8,7 @@
  * Author: Luke Smith
  */
 
-import { CTX, CANVAS, GRAVITY, FLOOR } from "./globals.js"
+import { CTX, CANVAS, GRAVITY, FLOOR, IMAGE } from "./globals.js"
 
 export default class Player {
   grounded = true;
@@ -40,7 +40,7 @@ export default class Player {
       this.velocity.y += GRAVITY;
     }
     
-    if (this.bottom > FLOOR) {
+    if (this.bottom + this.velocity.y >= FLOOR) {
       this.velocity.y = 0;
       this.position.y = FLOOR - this.height;
       this.grounded = true;
@@ -57,6 +57,8 @@ export default class Player {
   draw() {
     CTX.fillStyle = "yellow";
     CTX.fillRect(this.position.x, this.position.y, this.width, this.height);
+
+    //CTX.drawImage(IMAGE, this.position.x, this.position.y, this.width, this.height, 1678, 95, 1765 - 1678, 2 - 95)
   }
 
   jump() {

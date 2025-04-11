@@ -22,6 +22,10 @@ export const MS_PER_FRAME = 1000 / FPS;
 export const GRAVITY = 1;
 export const FLOOR = CANVAS.height - 25;  // Careful - if the height ever changes...
 
+// Image
+export const IMAGE = new Image();
+IMAGE.src = "../images/dino_large.png";
+
 // Some convenient keyboard codes
 export const KEYS = {
   SPACE:32,
@@ -56,4 +60,4 @@ export function randInt(min, max) {
 }
 
 // Export all the constants by default
-export default { CANVAS, CTX, FPS, MS_PER_FRAME, GRAVITY, FLOOR, KEYS, $, randInt }
+export default { CANVAS, CTX, FPS, MS_PER_FRAME, GRAVITY, FLOOR, KEYS, IMAGE, $, randInt }
