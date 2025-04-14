@@ -12,6 +12,7 @@ import { CTX, CANVAS, GRAVITY, FLOOR, IMAGE } from "./globals.js"
 
 export default class Player {
   grounded = true;
+  stepCount = 0;
   
   constructor(x, y, width, height) {
     this.width = width;
@@ -48,6 +49,11 @@ export default class Player {
     
     this.position.x += this.velocity.x;
     this.position.y += this.velocity.y + GRAVITY;
+    
+    if (this.stepCount >= 10) {
+      this.stepCount = 0;
+    }
+    
     this.draw();
   }
 
@@ -55,10 +61,13 @@ export default class Player {
    * Draw the player on the canvas
    */
   draw() {
-    CTX.fillStyle = "yellow";
-    CTX.fillRect(this.position.x, this.position.y, this.width, this.height);
-
-    //CTX.drawImage(IMAGE, this.position.x, this.position.y, this.width, this.height, 1678, 95, 1765 - 1678, 2 - 95)
+    if (this.stepCount < 5) {
+      CTX.drawImage(IMAGE, 1678, 2, 87, 93, this.position.x, this.position.y, this.width, this.height);
+      this.stepCount++;
+    } else {
+      CTX.drawImage(IMAGE, 1400, 2, 87, 93, this.position.x, this.position.y, this.width, this.height);
+      this.stepCount++;
+    }
   }
 
   jump() {

@@ -14,7 +14,7 @@ import Ground from "./ground.js";
 import { CANVAS, CTX, MS_PER_FRAME, KEYS, IMAGE } from "./globals.js";
 
 // Globals
-const HERO = new Player(100, 255, 48, 48);
+const HERO = new Player(100, 255, 58, 62);
 const GROUND = new Ground();
 
 let frame_time = performance.now()
