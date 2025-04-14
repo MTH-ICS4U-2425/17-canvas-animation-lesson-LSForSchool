@@ -60,20 +60,15 @@ function update() {
   CTX.clearRect(0, 0, CANVAS.width, CANVAS.height);
 
   // Draw the ground
-  if (GROUND.aSide) {
-    CTX.drawImage(IMAGE, 0, 102, 2300, 26, GROUND.feedTape[0] + GROUND.xPos, 300, 2300, 28);
-    CTX.drawImage(IMAGE, 1100, 102, 2300, 26, GROUND.feedTape[1] + GROUND.xPos + 1100, 300, 2300, 28);
-  } else {
-    CTX.drawImage(IMAGE, 1100, 102, 2300, 26, GROUND.feedTape[0] + GROUND.xPos + 1100, 300, 2300, 28);
-    CTX.drawImage(IMAGE, 0, 102, 2300, 26, GROUND.feedTape[1] + GROUND.xPos, 300, 2300, 28);
-  }
-
-  GROUND.xPos -= 5;
+  CTX.drawImage(IMAGE, 0, 102, 2300, 26, GROUND.xPos, 300, 2300, 26);
+  CTX.drawImage(IMAGE, 0, 102, 2300, 26, GROUND.xPos + GROUND.feedTape[0] + 2200, 300, 2300, 26);
+  CTX.drawImage(IMAGE, 0, 102, 2300, 26, GROUND.xPos + GROUND.feedTape[0] + GROUND.feedTape[1] + 4400, 300, 2300, 26);
 
   if (GROUND.xPos == -2200) {
     GROUND.addToFeed();
-    GROUND.xPos = 0;
   }
+  
+  GROUND.xPos -= 5;
 
   // Draw our hero
   HERO.update();
