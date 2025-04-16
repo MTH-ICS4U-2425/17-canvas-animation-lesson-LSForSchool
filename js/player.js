@@ -12,7 +12,13 @@ import { CTX, CANVAS, GRAVITY, FLOOR, IMAGE } from "./globals.js"
 
 export default class Player {
   grounded = true;
+  crouching = false;
   stepCount = 0;
+
+  xPixel = 1854;
+  yPixel = 2;
+  hPixel = 87;
+  wPixel = 93;
   
   constructor(x, y, width, height) {
     this.width = width;
@@ -61,20 +67,65 @@ export default class Player {
    * Draw the player on the canvas
    */
   draw() {
-    if (this.stepCount < 5) {
-      CTX.drawImage(IMAGE, 1678, 2, 87, 93, this.position.x, this.position.y, this.width, this.height);
-      this.stepCount++;
-    } else {
-      CTX.drawImage(IMAGE, 1400, 2, 87, 93, this.position.x, this.position.y, this.width, this.height);
-      this.stepCount++;
-    }
+    this.requestPixels();
+    CTX.drawImage(IMAGE, this.xPixel, this.yPixel, this.wPixel, this.hPixel, this.position.x, this.position.y, this.width, this.height);
+    this.stepCount++;
   }
 
+  requestPixels() {
+    if (this.stepCount < 5) {
+      if (this.crouching) { 
+        this.xPixel = 2206;
+        this.yPixel = 36;
+        this.wPixel = 117;
+        this.hPixel = 70;
+      } else {
+        this.xPixel = 1854;
+        this.yPixel = 2;
+        this.wPixel = 87;
+        this.hPixel = 93;
+      }
+    } else {
+      if (this.crouching) {
+        this.xPixel = 2324;
+        this.yPixel = 36;
+        this.wPixel = 117;
+        this.hPixel = 70;
+      } else {
+        this.xPixel = 1942;
+        this.yPixel = 2;
+        this.wPixel = 87;
+        this.hPixel = 93;
+      }
+    }
+
+    if (!this.grounded && !this.crouching) {
+        this.xPixel = 1678;
+        this.yPixel = 2;
+        this.wPixel = 87;
+        this.hPixel = 93;
+    }
+  }
+  
   jump() {
-    if (this.grounded) {
+    if (this.grounded && !this.crouching) {
       this.grounded = false;
       this.position.y -= 5;
       this.velocity.y = -20;
+      
+      // this.crouching = false; // Use this line of code if it's better to be able to jump out of a crouch
     }
+  }
+
+  crouch() {
+    this.crouching = true;
+
+    if (!this.grounded) {
+      this.velocity.y = 14;
+    }
+  }
+
+  uncrouch() {
+    this.crouching = false;
   }
 }

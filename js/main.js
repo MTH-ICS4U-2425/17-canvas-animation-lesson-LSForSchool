@@ -22,6 +22,7 @@ let frame_time = performance.now()
 
 // Event Listeners
 document.addEventListener("keydown", keypress);
+document.addEventListener("keyup", keyunpress);
 
 // Disable the context menu on the entire document
 document.addEventListener("contextmenu", (event) => { 
@@ -35,6 +36,16 @@ document.addEventListener("contextmenu", (event) => {
 function keypress(event) {
   if ([KEYS.W, KEYS.UP_ARROW, KEYS.SPACE].includes(event.keyCode)) {
     HERO.jump();
+  }
+
+  if ([KEYS.S, KEYS.DOWN_ARROW].includes(event.keyCode)) {
+    HERO.crouch();
+  }
+}
+
+function keyunpress(event) {
+  if ([KEYS.S, KEYS.DOWN_ARROW].includes(event.keyCode)) {
+    HERO.uncrouch();
   }
 }
 
@@ -69,10 +80,9 @@ function update() {
   }
   
   GROUND.xPos -= 5;
-
+  
   // Draw our hero
   HERO.update();
-  
 }
 
 // Start the animation
