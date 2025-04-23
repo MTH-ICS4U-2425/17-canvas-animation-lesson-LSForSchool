@@ -120,12 +120,19 @@ export default class Player {
   crouch() {
     this.crouching = true;
 
+    this.width = 78;
+    this.height = 47;
+    this.position.y += 15;
+
     if (!this.grounded) {
       this.velocity.y = 14;
     }
-  }
 
+  }
+  
   uncrouch() {
+    this.width = 58;
+    this.height = 62;
     this.crouching = false;
   }
 }

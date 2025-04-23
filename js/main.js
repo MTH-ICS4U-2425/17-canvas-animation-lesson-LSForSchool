@@ -5,7 +5,7 @@
  * 
  * Author: Luke Smith
  * 
- */
+*/
 
 'use strict';
 
@@ -14,7 +14,7 @@ import Ground from "./ground.js";
 import { CANVAS, CTX, MS_PER_FRAME, KEYS, IMAGE } from "./globals.js";
 
 // Globals
-const HERO = new Player(100, 255, 58, 62);
+const HERO = new Player(100, 180, 58, 62);
 const GROUND = new Ground();
 
 let frame_time = performance.now()
@@ -24,6 +24,8 @@ let frame_time = performance.now()
 document.addEventListener("keydown", keypress);
 document.addEventListener("keyup", keyunpress);
 
+CANVAS.addEventListener("click", update);
+
 // Disable the context menu on the entire document
 document.addEventListener("contextmenu", (event) => { 
   event.preventDefault();
@@ -32,12 +34,12 @@ document.addEventListener("contextmenu", (event) => {
 
 /**
  * The user pressed a key on the keyboard 
- */
+*/
 function keypress(event) {
   if ([KEYS.W, KEYS.UP_ARROW, KEYS.SPACE].includes(event.keyCode)) {
     HERO.jump();
   }
-
+  
   if ([KEYS.S, KEYS.DOWN_ARROW].includes(event.keyCode)) {
     HERO.crouch();
   }
@@ -52,7 +54,7 @@ function keyunpress(event) {
 
 /**
  * The main game loop
- */
+*/
 function update() {
   // Prepare for the next frame
   requestAnimationFrame(update)
@@ -69,12 +71,12 @@ function update() {
   
   // Clear the canvas
   CTX.clearRect(0, 0, CANVAS.width, CANVAS.height);
-
+  
   // Draw the ground
   CTX.drawImage(IMAGE, 0, 102, 2300, 26, GROUND.xPos, 300, 2300, 26);
   CTX.drawImage(IMAGE, 0, 102, 2300, 26, GROUND.xPos + GROUND.feedTape[0] + 2200, 300, 2300, 26);
   CTX.drawImage(IMAGE, 0, 102, 2300, 26, GROUND.xPos + GROUND.feedTape[0] + GROUND.feedTape[1] + 4400, 300, 2300, 26);
-
+  
   if (GROUND.xPos == -2200) {
     GROUND.addToFeed();
   }
@@ -85,5 +87,13 @@ function update() {
   HERO.update();
 }
 
+function splashScreen() {
+  CTX.drawImage(IMAGE, 1854, 2, 87, 93, 100, 180, 58, 62); // Draws the sample player
+  CTX.drawImage(IMAGE, 0, 102, 2300, 26, GROUND.xPos, 300, 2300, 26); // Draws the ground
+}
+
 // Start the animation
-update()
+// update()
+
+// Show the splash screen
+splashScreen();
