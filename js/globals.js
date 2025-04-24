@@ -24,7 +24,6 @@ export const FLOOR = CANVAS.height - 25;  // Careful - if the height ever change
 
 // Image
 export const IMAGE = new Image();
-IMAGE.src = "../images/dino_large.png";
 
 // Some convenient keyboard codes
 export const KEYS = {
@@ -36,7 +35,8 @@ export const KEYS = {
   W:87,
   A:65,
   S:83,
-  D:68
+  D:68,
+  ENTER: 13
 };
 
 /**

@@ -11,6 +11,7 @@
 
 import Player from "./player.js";
 import Ground from "./ground.js";
+import Cactus from "./cactus.js";
 import { CANVAS, CTX, MS_PER_FRAME, KEYS, IMAGE } from "./globals.js";
 
 // Globals
@@ -24,7 +25,7 @@ let frame_time = performance.now()
 document.addEventListener("keydown", keypress);
 document.addEventListener("keyup", keyunpress);
 
-CANVAS.addEventListener("click", update);
+CANVAS.addEventListener("click", startGame);
 
 // Disable the context menu on the entire document
 document.addEventListener("contextmenu", (event) => { 
@@ -42,6 +43,10 @@ function keypress(event) {
   
   if ([KEYS.S, KEYS.DOWN_ARROW].includes(event.keyCode)) {
     HERO.crouch();
+  }
+
+  if (event.keyCode == KEYS.ENTER) {
+    startGame();
   }
 }
 
@@ -88,12 +93,22 @@ function update() {
 }
 
 function splashScreen() {
-  CTX.drawImage(IMAGE, 1854, 2, 87, 93, 100, 180, 58, 62); // Draws the sample player
+  CTX.drawImage(IMAGE, 1678, 2, 87, 93, 100, 180, 58, 62); // Draws the sample player
   CTX.drawImage(IMAGE, 0, 102, 2300, 26, GROUND.xPos, 300, 2300, 26); // Draws the ground
+
+  let cactus = new Cactus();
+  CTX.drawImage(IMAGE, cactus.srcX, cactus.srcY, cactus.srcH, cactus.srcW, 200, 180, 58, 62)
 }
 
-// Start the animation
-// update()
+function startGame() {
+  requestAnimationFrame(update);
+
+  HERO.grounded = true;
+  HERO.crouching = false;
+  HERO.jump();
+}
 
 // Show the splash screen
-splashScreen();
+IMAGE.src = "../images/dino_large.png";
+IMAGE.onload = splashScreen;
+
