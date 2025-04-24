@@ -97,15 +97,19 @@ function splashScreen() {
   CTX.drawImage(IMAGE, 0, 102, 2300, 26, GROUND.xPos, 300, 2300, 26); // Draws the ground
 
   let cactus = new Cactus();
-  CTX.drawImage(IMAGE, cactus.srcX, cactus.srcY, cactus.srcH, cactus.srcW, 200, 180, 58, 62)
+  CTX.drawImage(IMAGE, cactus.srcX, cactus.srcY, cactus.srcW, cactus.srcH, 200, 180, cactus.srcW, cactus.srcH);
 }
 
 function startGame() {
-  requestAnimationFrame(update);
+  if (!HERO.alive) {
+    requestAnimationFrame(update);
+    
+    HERO.alive = true; 
 
-  HERO.grounded = true;
-  HERO.crouching = false;
-  HERO.jump();
+    HERO.grounded = true;
+    HERO.crouching = false;
+    HERO.jump();
+  }
 }
 
 // Show the splash screen

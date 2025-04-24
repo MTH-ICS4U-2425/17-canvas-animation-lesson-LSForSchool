@@ -15,6 +15,8 @@ export default class Player {
   crouching = false;
   stepCount = 0;
 
+  alive = false;
+
   xPixel = 1854;
   yPixel = 2;
   hPixel = 87;
