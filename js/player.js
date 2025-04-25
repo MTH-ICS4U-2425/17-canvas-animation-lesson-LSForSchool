@@ -113,7 +113,7 @@ export default class Player {
     if (this.grounded && !this.crouching) {
       this.grounded = false;
       this.position.y -= 5;
-      this.velocity.y = -20;
+      this.velocity.y = -22;
       
       // Use this line of code if it's better to be able to jump out of a croutch
       // this.crouching = false;    

@@ -18,6 +18,7 @@ import { CANVAS, CTX, MS_PER_FRAME, KEYS, IMAGE } from "./globals.js";
 const HERO = new Player(100, 180, 58, 62);
 const GROUND = new Ground();
 const CACTI = new Array(0);
+let cactiTimer = 0;
 
 let frame_time = performance.now()
 
@@ -89,6 +90,22 @@ function update() {
   
   GROUND.xPos -= 5;
   
+  if (CACTI[0].xPos < -100) {
+    CACTI.shift();
+  }
+  
+  for (let cactiCount in CACTI) {
+    CTX.drawImage(IMAGE, CACTI[cactiCount].srcX, CACTI[cactiCount].srcY, CACTI[cactiCount].srcW, CACTI[cactiCount].srcH, CACTI[cactiCount].position.x, CACTI[cactiCount].position.y, CACTI[cactiCount].srcW / 1.4, CACTI[cactiCount].srcH / 1.4);
+    CACTI[cactiCount].position.x -= 5;
+  }
+
+  if (cactiTimer == 120) {
+    spawnCactus();
+    cactiTimer = 0;
+  }
+  
+  cactiTimer++;
+
   // Draw our hero
   HERO.update();
 }
@@ -96,6 +113,7 @@ function update() {
 function splashScreen() {
   CTX.drawImage(IMAGE, 1678, 2, 87, 93, 100, 180, 58, 62); // Draws the sample player
   CTX.drawImage(IMAGE, 0, 102, 2300, 26, GROUND.xPos, 300, 2300, 26); // Draws the ground
+  CTX.drawImage(IMAGE, 218, 130, 71, 63, 479, 150, 71, 63); // Draws a button that almost looks like a start button
 }
 
 function startGame() {
@@ -107,20 +125,15 @@ function startGame() {
     HERO.grounded = true;
     HERO.crouching = false;
     HERO.jump();
+
+    spawnCactus();
   }
 }
 
 function spawnCactus() {
-  console.log(CACTI);
   CACTI.push(new Cactus());
-
-  // Fix the sources
-  CTX.drawImage(IMAGE, cactus.srcX, cactus.srcY, cactus.srcW, cactus.srcH, 200, 180, cactus.srcW, cactus.srcH);
-  console.log(CACTI);
 }
 
 // Show the splash screen
 IMAGE.src = "../images/dino_large.png";
 IMAGE.onload = splashScreen;
-
-spawnCactus();
