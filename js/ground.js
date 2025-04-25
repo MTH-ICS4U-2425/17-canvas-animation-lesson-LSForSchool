@@ -2,6 +2,7 @@
  * ground.js
  * 
  * Handles the ground as a class
+ * UNIFINISHED
  */
 
 import { randInt } from "./globals.js";

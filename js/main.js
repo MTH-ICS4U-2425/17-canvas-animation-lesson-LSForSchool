@@ -17,6 +17,7 @@ import { CANVAS, CTX, MS_PER_FRAME, KEYS, IMAGE } from "./globals.js";
 // Globals
 const HERO = new Player(100, 180, 58, 62);
 const GROUND = new Ground();
+const CACTI = new Array(0);
 
 let frame_time = performance.now()
 
@@ -95,9 +96,6 @@ function update() {
 function splashScreen() {
   CTX.drawImage(IMAGE, 1678, 2, 87, 93, 100, 180, 58, 62); // Draws the sample player
   CTX.drawImage(IMAGE, 0, 102, 2300, 26, GROUND.xPos, 300, 2300, 26); // Draws the ground
-
-  let cactus = new Cactus();
-  CTX.drawImage(IMAGE, cactus.srcX, cactus.srcY, cactus.srcW, cactus.srcH, 200, 180, cactus.srcW, cactus.srcH);
 }
 
 function startGame() {
@@ -112,7 +110,17 @@ function startGame() {
   }
 }
 
+function spawnCactus() {
+  console.log(CACTI);
+  CACTI.push(new Cactus());
+
+  // Fix the sources
+  CTX.drawImage(IMAGE, cactus.srcX, cactus.srcY, cactus.srcW, cactus.srcH, 200, 180, cactus.srcW, cactus.srcH);
+  console.log(CACTI);
+}
+
 // Show the splash screen
 IMAGE.src = "../images/dino_large.png";
 IMAGE.onload = splashScreen;
 
+spawnCactus();
