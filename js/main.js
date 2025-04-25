@@ -22,6 +22,8 @@ let cactiTimer = 0;
 
 let frame_time = performance.now()
 
+let noReset = false;
+
 
 // Event Listeners
 document.addEventListener("keydown", keypress);
@@ -63,51 +65,61 @@ function keyunpress(event) {
  * The main game loop
 */
 function update() {
-  // Prepare for the next frame
-  requestAnimationFrame(update)
-  
-  /*** Desired FPS Trap ***/
-  const NOW = performance.now()
-  const TIME_PASSED = NOW - frame_time
-  
-  if (TIME_PASSED < MS_PER_FRAME) return
-  
-  const EXCESS_TIME = TIME_PASSED % MS_PER_FRAME
-  frame_time = NOW - EXCESS_TIME
-  /*** END FPS Trap ***/
-  
-  // Clear the canvas
-  CTX.clearRect(0, 0, CANVAS.width, CANVAS.height);
-  
-  // Draw the ground
-  CTX.drawImage(IMAGE, 0, 102, 2300, 26, GROUND.xPos, 300, 2300, 26);
-  CTX.drawImage(IMAGE, 0, 102, 2300, 26, GROUND.xPos + GROUND.feedTape[0] + 2200, 300, 2300, 26);
-  CTX.drawImage(IMAGE, 0, 102, 2300, 26, GROUND.xPos + GROUND.feedTape[0] + GROUND.feedTape[1] + 4400, 300, 2300, 26);
-  
-  if (GROUND.xPos == -2200) {
-    GROUND.addToFeed();
-  }
-  
-  GROUND.xPos -= 5;
-  
-  if (CACTI[0].xPos < -100) {
-    CACTI.shift();
-  }
-  
-  for (let cactiCount in CACTI) {
-    CTX.drawImage(IMAGE, CACTI[cactiCount].srcX, CACTI[cactiCount].srcY, CACTI[cactiCount].srcW, CACTI[cactiCount].srcH, CACTI[cactiCount].position.x, CACTI[cactiCount].position.y, CACTI[cactiCount].srcW / 1.4, CACTI[cactiCount].srcH / 1.4);
-    CACTI[cactiCount].position.x -= 5;
-  }
+  if (HERO.alive) {
+    // Prepare for the next frame
+    requestAnimationFrame(update)
+    
+    /*** Desired FPS Trap ***/
+    const NOW = performance.now()
+    const TIME_PASSED = NOW - frame_time
+    
+    if (TIME_PASSED < MS_PER_FRAME) return
+    
+    const EXCESS_TIME = TIME_PASSED % MS_PER_FRAME
+    frame_time = NOW - EXCESS_TIME
+    /*** END FPS Trap ***/
+    
+    // Clear the canvas
+    CTX.clearRect(0, 0, CANVAS.width, CANVAS.height);
+    
+    // Draw the ground
+    CTX.drawImage(IMAGE, 0, 102, 2300, 26, GROUND.xPos, 300, 2300, 26);
+    CTX.drawImage(IMAGE, 0, 102, 2300, 26, GROUND.xPos + GROUND.feedTape[0] + 2200, 300, 2300, 26);
+    CTX.drawImage(IMAGE, 0, 102, 2300, 26, GROUND.xPos + GROUND.feedTape[0] + GROUND.feedTape[1] + 4400, 300, 2300, 26);
+    
+    if (GROUND.xPos == -2200) {
+      GROUND.addToFeed();
+    }
+    
+    GROUND.xPos -= 5;
+    
+    if (CACTI[0].xPos < -100) {
+      CACTI.shift();
+    }
+    
+    for (let cactiCount in CACTI) {
+      CTX.drawImage(IMAGE, CACTI[cactiCount].srcX, CACTI[cactiCount].srcY, CACTI[cactiCount].srcW, CACTI[cactiCount].srcH, CACTI[cactiCount].position.x, CACTI[cactiCount].position.y, CACTI[cactiCount].srcW / 1.4, CACTI[cactiCount].srcH / 1.4);
+      CACTI[cactiCount].position.x -= 5;
 
-  if (cactiTimer == 120) {
-    spawnCactus();
-    cactiTimer = 0;
-  }
-  
-  cactiTimer++;
+      // Checks for player death
+      if (HERO.left >= CACTI[cactiCount].position.x + 10 && HERO.left <= CACTI[cactiCount].position.x + CACTI[cactiCount].srcW / 1.6 && HERO.bottom > CACTI[cactiCount].position.y) {
+        playerDeath();
+      }
+      if (HERO.right >= CACTI[cactiCount].position.x + 10 && HERO.right <= CACTI[cactiCount].position.x + CACTI[cactiCount].srcW / 1.6 && HERO.bottom > CACTI[cactiCount].position.y) {
+        playerDeath();
+      }
+    }
 
-  // Draw our hero
-  HERO.update();
+    if (cactiTimer == 120) {
+      spawnCactus();
+      cactiTimer = 0;
+    }
+    
+    cactiTimer++;
+
+    // Draw our hero
+    HERO.update();
+  }
 }
 
 function splashScreen() {
@@ -117,7 +129,7 @@ function splashScreen() {
 }
 
 function startGame() {
-  if (!HERO.alive) {
+  if (!HERO.alive && !noReset) {
     requestAnimationFrame(update);
     
     HERO.alive = true; 
@@ -128,6 +140,13 @@ function startGame() {
 
     spawnCactus();
   }
+}
+
+function playerDeath() {
+  HERO.alive = false;
+  noReset = true;
+
+  CTX.drawImage(IMAGE, 1294, 29, 380, 20, 350, 170, 380, 20);
 }
 
 function spawnCactus() {
